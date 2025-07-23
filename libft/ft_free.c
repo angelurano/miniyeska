@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/20 00:00:07 by migugar2          #+#    #+#             */
-/*   Updated: 2025/07/23 05:18:41 by migugar2         ###   ########.fr       */
+/*   Created: 2025/07/23 04:51:42 by migugar2          #+#    #+#             */
+/*   Updated: 2025/07/23 04:54:21 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int argc, char *argv[], char *envp[])
+void	*ft_free(void **ptr)
 {
-	char	*line;
-
-	ft_putstr_fd("Welcome to MiniYeska!\n", 1);
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	while (1)
+	if (ptr && *ptr)
 	{
-		// TODO: Handle signals
-		line = readline(MINI_PROMPT);
-		if (!line)
-			break ;
-		if (*line)
-			add_history(line);
-		printf("You entered: %s\n", line);
-		ft_free((void **)&line);
+		free(*ptr);
+		*ptr = NULL;
 	}
-	rl_clear_history();
+	return (NULL);
 }

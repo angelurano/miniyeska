@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 19:41:11 by migugar2          #+#    #+#             */
-/*   Updated: 2025/07/20 00:37:55 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/07/23 04:52:26 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+void	*ft_free(void **ptr);
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
