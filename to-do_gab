@@ -1,0 +1,33 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    to-do_gab                                          :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/07/22 23:40:58 by gomandam          #+#    #+#              #
+#    Updated: 2025/07/23 02:48:41 by gomandam         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+To do list I:
+
+	Built-ins:
+		echo, cd, pwd, export, unset, env, exit
+
+	
+To do list II:
+
+	Fork function to (read/write) another file-descriptor to another
+	Understanding fork process: https://youtu.be/cex9XrZCU14?si=ZmBMk9Rm6b89lqjh
+
+	Pipe function
+
+	
+Read on:
+
+	execve
+
+	Search in envp: PATH variables
+
+	
