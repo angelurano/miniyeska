@@ -6,11 +6,14 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:02:59 by gomandam          #+#    #+#             */
-/*   Updated: 2025/07/25 02:28:24 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/07/31 02:52:47 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+
+// ? reference: https://github.com/g01100001/unattributed-source/blob/main/minishell-gonzlo-correction/src/built-ins/cd.c 
 
 void	cd_error(char **str[2])
 {
