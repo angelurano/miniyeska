@@ -6,16 +6,15 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:03:44 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/02 01:11:33 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/02 03:51:32 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ! Exit
 #include "../../include/minishell.h"
 
-/*	Checks if the string is a valid numeric argument for exit.
+/*	Check string = valid numeric argument for exit.
 	Accepts optional + or - sign, then digits only.	*/
-static int	is_numeric(const char *str)
+static int	_numeric(const char *str)
 {
 	int	i;
 
@@ -32,7 +31,7 @@ static int	is_numeric(const char *str)
 	}
 	return (1);
 }
-//	Converts string to long long. No error checking here.
+//	Converts string to long long.
 static long long	ft_atoll(const char *str)
 {
 	long long	res;
@@ -58,7 +57,41 @@ static long long	ft_atoll(const char *str)
 	return (res * sign);
 }
 
-int	exit()
+// ! TO-DO:	Implement freeing child processes: free_shell();
+//		Or from miguel's free(); functions
+
+/*	print "exit" before executing exit
+ 	handle: no args, 1 numeric, non-numeric & multiple
+	set status variable for multiple args (no exit)
+ */
+int	exit(t_minishell *shell, char *argv[])
 {
-	
+	long long	status;
+
+	printf("exit\n");
+	if (!argv[1])
+	{
+		free_shell(&shell);	// implement free
+		exit(0);
+	}
+	if (!_numeric(argv[1]))
+	{
+		printf("bash: exit: %s: numeric argument required\n", argv[1]);
+		free_shell(&shell);
+		exit(2);
+	}
+	if (argv[2])			// finalize this snippet
+	{
+		printf("bash: exit: too many arguments\n");
+		shell->status = 1;
+		return ;
+	}
+	status = ft_atoll(argv[1]);
+	status = status % 256;		// ?
+	if (status < 0)
+	{
+		status += 256;
+	}
+	free_shell(&shell);
+	exit(status);
 }
