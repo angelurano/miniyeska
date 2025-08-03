@@ -6,22 +6,18 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:03:44 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/03 00:19:56 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/03 05:06:24 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*	Check string = valid numeric argument for exit
-	Accepts optional + or - sign, then digits only	*/
-static int	_numeric(const char *str)
+static int	is_numeric(const char *str)
 {
 	int	i;
 
 	i = 0;
-	if (!str || !str[0])
-		return (0);
-	if (str[0] == '-' || str[0] == '+')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])
 	{
@@ -31,65 +27,30 @@ static int	_numeric(const char *str)
 	}
 	return (1);
 }
-//	Converts string to long long
-static long long	ft_atoll(const char *str)
-{
-	long long	res;
-	int			sign;
-	int			i;
 
-	res = 0;
-	sign = 1;
-	i = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res = res * 10 + (str[i] - '0');
-		i++;
-	}
-	return (res * sign);
-}
-
-// ! TO-DO:	Implement freeing child processes: free_shell();
-//		Or from miguel's free(); functions
-
-/*	print "exit" before executing exit
- 	handle: no args, 1 numeric, non-numeric & multiple
-	set status variable for multiple args (no exit)
- */
 int	exit(t_minishell *shell, char *argv[])
 {
-	long long	status;
+	int	exit_status;
 
-	printf("exit\n");
-	if (!argv[1])
+	exit_status = 0;
+	if (argv[1])
 	{
-		free_shell(&shell);	// implement free function
-		exit(0);
+		if (!is_numeric(argv[1]))
+		{
+			printf("exit: numeric argument required\n");
+			exit_status = 255;
+		}
+		else if (argv[2])
+		{
+			printf("exit: too many arguments\n");	// alternative: write(2, "stderr", buff);
+			return (1);
+		}
+		else
+			exit_status = atoi(argv[1]) % 256;	// UNIX exit codes [0, 255]
 	}
-	if (!_numeric(argv[1]))
-	{
-		printf("bash: exit: %s: numeric argument required\n", argv[1]);
-		free_shell(&shell);
-		exit(2);
-	}
-	if (argv[2])			// finalize this snippet
-	{
-		printf("bash: exit: too many arguments\n");
-		shell->status = 1;
-		return ;
-	}
-	status = ft_atoll(argv[1]);
-	status = exit((unsigned char)status);		// exit code valid range [0, 255] unsigned 8-bit
-	if (status < 0)
-		status += 256;
-	free_shell(&shell);
-	exit(status);
+	rl_clear_history();		// Free the readline history memory, since exit
+	free_shell(shell);		// ! IMPLEMENT: Free all resources and structures
+	exit(exit_status);
 }
+
+// For verbose BASH behaviour, use isatty(STDIN_FILENO); but exit() is enough
