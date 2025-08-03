@@ -6,14 +6,14 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:03:44 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/02 03:51:32 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/03 00:19:56 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*	Check string = valid numeric argument for exit.
-	Accepts optional + or - sign, then digits only.	*/
+/*	Check string = valid numeric argument for exit
+	Accepts optional + or - sign, then digits only	*/
 static int	_numeric(const char *str)
 {
 	int	i;
@@ -31,7 +31,7 @@ static int	_numeric(const char *str)
 	}
 	return (1);
 }
-//	Converts string to long long.
+//	Converts string to long long
 static long long	ft_atoll(const char *str)
 {
 	long long	res;
@@ -71,7 +71,7 @@ int	exit(t_minishell *shell, char *argv[])
 	printf("exit\n");
 	if (!argv[1])
 	{
-		free_shell(&shell);	// implement free
+		free_shell(&shell);	// implement free function
 		exit(0);
 	}
 	if (!_numeric(argv[1]))
@@ -87,11 +87,9 @@ int	exit(t_minishell *shell, char *argv[])
 		return ;
 	}
 	status = ft_atoll(argv[1]);
-	status = status % 256;		// ?
+	status = exit((unsigned char)status);		// exit code valid range [0, 255] unsigned 8-bit
 	if (status < 0)
-	{
 		status += 256;
-	}
 	free_shell(&shell);
 	exit(status);
 }
