@@ -6,10 +6,22 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:04:11 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/03 02:24:57 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/05 04:23:06 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+	set environment variables -> available to child process
+	e.g. if 'unset' a function, 'export' to access
+ */
+
 #include "../,,/include/minishell.h"
 
+int	export(char *argv[], char *envp[])
+{
+	
 
+	// if (!argv[1] || !envp)	return (0);
+}
+
+// https://github.com/DanielCasti11o/Mini_Shell/blob/main/src/built_in_env.c
