@@ -6,7 +6,7 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:02:59 by gomandam          #+#    #+#             */
-/*   Updated: 2025/07/31 02:52:47 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/07 02:06:37 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 // ? reference: https://github.com/g01100001/unattributed-source/blob/main/minishell-gonzlo-correction/src/built-ins/cd.c 
 
-void	cd_error(char **str[2])
+void	cd_error(char **argv[2])
 {
 	if ()
 	//No argument (cd): goes to $HOME or errors if not set.
@@ -25,8 +25,23 @@ void	cd_error(char **str[2])
 
 // separate command logic from error handling, updates environment variables
 
-int	cd(own_struct *placeholder)
+int	cd(t_minishell *shell, char *argv[])
 {
+	char	*cwd;
+	
+	if (!argv[1])
+		return(printf("minishell: cd: error\n"), 0);
+	if (chdir(argv[1]) != 0) 	// chdir function returns 0 on success and -1 on failure. Anything other than 0 is an error occurence.
+		return (0);
+	if (shell->prompt)		// ? 	TODO: retrospect. 
+		free(shell->prompt);
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (0);
+	
+}
+https://github.com/DanielCasti11o/Mini_Shell/blob/main/src/built_in.c
+
 	// 1. Get command arguments
 	// 2. Retrieve HOME from environment
 	// 3. Build matrix with HOME
@@ -35,4 +50,3 @@ int	cd(own_struct *placeholder)
 	// 6. If chdir successful, update OLDPWD
 	// 7. Update PWD to new current directory
 	// 8. Free and return
-}
