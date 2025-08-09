@@ -6,7 +6,7 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:03:55 by gomandam          #+#    #+#             */
-/*   Updated: 2025/07/31 02:10:34 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/09 02:17:03 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	pwd(void)	// alternative prototype: state of session
 		perror("minishell: pwd: error retrieving current directory");
 		return (0);
 	}
-	printf("%s\n", cwd);	// current working directory
+	printf("%s\n", cwd);		// current working directory
 	free(cwd);
 	return (1);
 }
