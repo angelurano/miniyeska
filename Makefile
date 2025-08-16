@@ -1,16 +1,32 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
+CFLAGS = -Wall -Wextra -Werror $(INCFLAGS)
 
 RM = rm -f
 
 INC_DIR = include
-INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR) -lreadline
+INCFLAGS = -I$(INC_DIR) -I$(LIBFT_DIR)
+LDFLAGS = -lreadline
 
 SRC_DIR = source
-SOURCES = source/main.c
-OBJ = $(SOURCES:.c=.o)
+SOURCES = $(SRC_DIR)/main.c \
+					$(SRC_DIR)/env.c \
+					$(SRC_DIR)/init.c \
+					$(SRC_DIR)/errors.c \
+					$(SRC_DIR)/lexer/free.c \
+					$(SRC_DIR)/lexer/general.c \
+					$(SRC_DIR)/lexer/handlers.c \
+					$(SRC_DIR)/lexer/lexer.c \
+					$(SRC_DIR)/lexer/segments.c \
+					$(SRC_DIR)/lexer/tokens.c  \
+					$(SRC_DIR)/parser/command.c \
+					$(SRC_DIR)/parser/free.c \
+					$(SRC_DIR)/parser/operators.c \
+					$(SRC_DIR)/parser/parser.c \
+					$(SRC_DIR)/parser/redir.c \
+					$(SRC_DIR)/debug.c #! Temporal
+OBJ = $(SOURCES:%.c=%.o)
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -19,7 +35,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
 	@echo "Creating miniyeska..."
-	@$(CC) $(OBJ) $(CFLAGS) $(LIBFT) -o $(NAME)
+	@$(CC) $(OBJ) $(CFLAGS) $(LIBFT) $(LDFLAGS) -o $(NAME)
 	@echo "Finish!"
 
 $(LIBFT):
