@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 17:49:59 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/15 18:44:17 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/16 13:26:18 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	init_envp(t_shell *shell, char *envp[])
 	shell->env_list.head = NULL;
 	shell->env_list.tail = NULL;
 	shell->env_list.size = 0;
+	shell->env_list.envp = NULL;
 	while (envp[shell->env_list.size] != NULL)
 	{
 		cur = malloc(sizeof(t_env));
@@ -32,7 +33,6 @@ int	init_envp(t_shell *shell, char *envp[])
 		cur->next = NULL;
 		env_list_push(&shell->env_list, cur);
 	}
-	shell->env_list.envp = NULL;
 	return (0);
 }
 
