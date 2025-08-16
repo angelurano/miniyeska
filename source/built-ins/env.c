@@ -6,23 +6,23 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:03:25 by gomandam          #+#    #+#             */
-/*   Updated: 2025/07/31 02:47:49 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/16 14:49:55 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// protoyped: char *envp[] or struct state t_minishell *shell
-#include "minishell.h"
+// protoyped: char *envp[] or struct state t_shell *shell
+#include "../../include/minishell.h"
 
-int	env(char *envp[])
+int	env(t_env_list *env_list)
 {
-	int	i;
+	t_env	*current;
 
-	i = 0;
-	while (envp && envp[i])		// check not NULL, iterates until NULL
+	current = env_list->head;
+	while (current)
 	{
-		if (ft_strchr(envp[i], '='))	// check '='
-			printf("%s\n", envp[i]);	// std-out
-		i++;				// next env array
+		if (current->full && ft_strchr(current->, '='))
+			printf("%s\n", current->full);
+		current = current->next;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:04:11 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/08 03:39:02 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/16 15:34:35 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,6 @@
  */
 
 #include "../../include/minishell.h"
-
-/*
-int	export(char *argv[], char *envp[])
-{
-	// if (!argv[1] || !envp)	return (0);
-}
-https://github.com/DanielCasti11o/Mini_Shell/blob/main/src/built_in_env.c
-*/
 
 // Print single env var in the correct format with quotes around values.
 void	print_export_var(char *var)

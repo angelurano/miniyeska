@@ -6,17 +6,22 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:04:11 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/09 02:16:25 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:44:17 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-	unset values & attribs of variables/functions
-	remove access from current shell session, do not affect child process
-*/
+/*	Unset values & attributes of variables.
+ *	Removes access from the current shell session.
+ *	Does NOT affect the parent of the shell.	*/
 
 #include "../../include/minishell.h"
 
+static int	unset_env(t_env_list *env_list, const char *key)
+{
+	
+}
+
+/*
 int	unset(char *argv[], char *envp[])
 {
 	int		a;
@@ -45,5 +50,4 @@ int	unset(char *argv[], char *envp[])
 	printf("minishell: unset: variable %s not found\n", var);
 	return (1);
 }
-
-// Reference:	export(); function form my export.c
+*/
