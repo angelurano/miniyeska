@@ -6,63 +6,51 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 00:00:07 by migugar2          #+#    #+#             */
-/*   Updated: 2025/07/26 02:09:54 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/15 19:00:25 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// ! Temporal
-void	debug_tokens(t_tok *head)
-{
-	const char *toktype_names[] = {
-		"T_WORD", "T_PIPE", "T_AND_IF", "T_OR_IF",
-		"T_INFILE", "T_HEREDOC", "T_OUTFILE", "T_APPEND",
-		"T_LPAREN", "T_RPAREN"
-	};
-	const char *segtype_names[] = {
-		"SEG_TEXT", "SEG_PARAM", "SEG_WILDCARD"
-	};
-	printf("-> Tokens:\n");
-	t_tok	*tok = head;
-	while (tok != NULL)
-	{
-		printf("	Token type: %s (%d)\n", toktype_names[tok->type], tok->type);
-		t_seg	*seg = tok->seg_head;
-		while (seg != NULL)
-		{
-			printf("		Segment type: %s (%d), slice: [%.*s]\n", segtype_names[seg->type], seg->type, (int)seg->slice.len, seg->slice.begin);
-			seg = seg->next;
-		}
-		tok = tok->next;
-	}
-}
-
 int	main(int argc, char *argv[], char *envp[])
 {
-	char	*line;
-	t_tok	*tokens;
+	t_shell	shell;
 
 	ft_putstr_fd("Welcome to MiniYeska!\n", 1);
 	(void)argc;
 	(void)argv;
-	(void)envp;
+	if (init_shell(&shell, envp) == 1)
+		return (1);
 	while (1)
 	{
-		// TODO: Handle signals
-		line = readline(MINI_PROMPT);
-		if (!line)
+		// TODO: Handle signals, and exit errors for return 1
+		shell.line = readline(MINI_PROMPT);
+		if (!shell.line)
 			break ;
-		if (*line)
-			add_history(line);
-		if (tokenize(line, &tokens) == 1)
+		if (*shell.line)
+			add_history(shell.line);
+		if (tokenize(shell.line, &shell.tokens) == 1)
 		{
-			ft_free((void **)&line);
+			ft_free((void **)&shell.line);
 			break ;
 		}
-		debug_tokens(tokens);
-		free_tokens(&tokens);
-		ft_free((void **)&line);
+		if (shell.tokens == NULL)
+		{
+			ft_free((void **)&shell.line);
+			continue ;
+		}
+		debug_tokenizer(shell.tokens);
+		if (parse_ast(shell.tokens, &shell.ast) == 1)
+		{
+			// free_tokens(&shell.tokens);
+			ft_free((void **)&shell.line);
+			continue ;
+		}
+		debug_parser(shell.ast);
+		free_ast_parse(&shell.ast); // ? Must use free_ast_final when ast is expanded
+		// free_tokens(&tokens); // TODO: free tokens must not free because are freed
+		ft_free((void **)&shell.line);
 	}
+	free_env_list(&shell.env_list);
 	rl_clear_history();
 }

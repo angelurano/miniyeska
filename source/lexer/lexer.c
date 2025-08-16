@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:41:41 by migugar2          #+#    #+#             */
-/*   Updated: 2025/07/26 02:04:34 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/08 20:04:27 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,18 @@ static t_lxhandler	lexer_handler(t_lxstate state)
 	return (handle_finish);
 }
 
+static int	lexer_error(t_lexer *lx, t_tok **out)
+{
+	*out = NULL;
+	free_tokens(&lx->head);
+	if (lx->state == LX_ERR)
+		return (perror_malloc());
+	else if (*lx->cur == '\0')
+		perror_unexpecteof(lx->prev);
+	// * else unmanaged error in LX_DIE
+	return (0);
+}
+
 int	tokenize(const char *input, t_tok **out)
 {
 	t_lexer		lx;
@@ -62,12 +74,7 @@ int	tokenize(const char *input, t_tok **out)
 	}
 	emit_tok(&lx);
 	if (lx.state == LX_ERR || lx.state == LX_DIE)
-	{
-		*out = NULL;
-		free_tokens(&lx.head);
-	}
-	if (lx.state == LX_ERR)
-		return (1);
+		return (lexer_error(&lx, out));
 	*out = lx.head;
 	return (0);
 }

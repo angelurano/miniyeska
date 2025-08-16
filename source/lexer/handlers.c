@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:09:42 by migugar2          #+#    #+#             */
-/*   Updated: 2025/07/26 02:02:12 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/08 18:43:41 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ t_lxstate	handle_in_double_q(t_lexer *lx)
 	}
 	if (*lx->cur == '\0')
 		return (LX_DIE);
-	if (lx->cur - start == 0 && lx->prev == LX_PARAM)
-		return (lx_advance(lx), LX_GENERAL);
 	if (start_word(lx) == 1)
 		return (LX_ERR);
 	if (add_seg(lx, SEG_TEXT, start, lx->cur - start) == 1)
