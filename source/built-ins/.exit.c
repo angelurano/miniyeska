@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   .exit.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:03:44 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/03 00:19:56 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/16 11:51:31 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static long long	ft_atoll(const char *str)
  	handle: no args, 1 numeric, non-numeric & multiple
 	set status variable for multiple args (no exit)
  */
-int	exit(t_minishell *shell, char *argv[])
+int	exit(t_shell *shell, char *argv[])
 {
 	long long	status;
 
@@ -76,13 +76,13 @@ int	exit(t_minishell *shell, char *argv[])
 	}
 	if (!_numeric(argv[1]))
 	{
-		printf("bash: exit: %s: numeric argument required\n", argv[1]);
+		printf("minishell: exit: %s: numeric argument required\n", argv[1]);
 		free_shell(&shell);
 		exit(2);
 	}
 	if (argv[2])			// finalize this snippet
 	{
-		printf("bash: exit: too many arguments\n");
+		printf("minishell: exit: too many arguments\n");
 		shell->status = 1;
 		return ;
 	}

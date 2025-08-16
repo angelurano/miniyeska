@@ -6,7 +6,7 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:02:59 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/07 02:06:37 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/16 11:52:17 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	cd_error(char **argv[2])
 
 // separate command logic from error handling, updates environment variables
 
-int	cd(t_minishell *shell, char *argv[])
+int	cd(t_shell *shell, char *argv[])
 {
 	char	*cwd;
 	
