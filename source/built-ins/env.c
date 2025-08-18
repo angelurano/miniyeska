@@ -6,7 +6,7 @@
 /*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 02:03:25 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/16 14:49:55 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/08/18 23:33:26 by gomandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	env(t_env_list *env_list)
 	current = env_list->head;
 	while (current)
 	{
-		if (current->full && ft_strchr(current->, '='))
+		if (current->full && ft_strchr(current->full, '='))
 			printf("%s\n", current->full);
 		current = current->next;
 	}
