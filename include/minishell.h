@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 00:02:21 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/15 18:59:20 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/17 18:43:24 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int			perror_malloc(void);
 int			perror_unexpecteof(t_lxstate prev);
 int			perror_unexpecteol(void);
 int			perror_syntaxtok(t_tok *cur);
+int			perror_ambiguosredir(t_tok *word);
 
 // lexer
 
@@ -99,24 +100,54 @@ t_ast		*new_op_node(t_asttype type, t_ast *left, t_ast *right);
 int			parse_pipe(t_tok **cur, t_ast **out);
 int			parse_and_or(t_tok **cur, t_ast **out);
 
+void		free_redirslst(t_redir **head);
 void		free_redirs(t_redirs *list);
 void		free_ast_cmd_parse(t_ast **ast);
 void		free_ast_parse(t_ast **ast);
 
 int			parse_ast(t_tok *tokens, t_ast **out);
 
-// !debug: delete file and functions
-void		debug_tok(t_tok *tok, int level);
-void		debug_tokenizer(t_tok *head);
-void		debug_parser(t_ast *ast);
+// expansion
+
+t_param		*new_param(void);
+void		param_push(t_param **head, t_param **tail, t_param *new_param);
+int			new_argv_push(t_argv *argv, char *value);
+char		**convert_argv_to_array(t_argv *argv);
+
+int			expand_redir(t_shell *shell, t_redir *redir);
+int			expand_redirs(t_shell *shell, t_redirs *redirs);
+
+int			expand_wildcards(t_shell *sh, t_exp *exp, t_tok *tok, t_argv *argv);
+
+void		free_param(t_param **param, t_seg *from_seg);
+void		free_paramlst(t_param **head, t_param **tail, t_seg *segs);
+void		free_argv(t_argv *argv);
+void		free_exp_redir(t_redir **redir);
+void		free_exp_redirslst(t_redir **head);
+void		free_exp_redirs(t_redirs *redirs);
+void		free_ast_cmd_final(t_ast **ast);
+void		free_ast_final(t_ast **ast);
+
+int			expand_tok(t_exp *exp, t_tok *tok, t_argv *argv);
+int			expand_cmd(t_shell *shell, t_cmd *cmd);
+int			expansion(t_shell *shell, t_tok *tok, t_argv *argv);
+
+char		*literal_expansion(t_tok *word);
+char		*simple_expansion(t_tok *word);
 
 // env functions
 
 t_env		*create_env_node(char *full, char *value);
+char		*get_env_value(t_env_list *env_list, const char *key);
 void		env_list_push(t_env_list *env_list, t_env *node);
 void		free_env_list(t_env_list *env_list);
 
 // main helper functions
 int			init_shell(t_shell *shell, char *envp[]);
+
+// !debug: delete file and functions
+void		debug_tok(t_tok *tok, int level);
+void		debug_tokenizer(t_tok *head);
+void		debug_parser(t_shell *shell, t_ast *ast);
 
 #endif

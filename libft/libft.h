@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 19:41:11 by migugar2          #+#    #+#             */
-/*   Updated: 2025/07/23 04:52:26 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/17 19:26:03 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,14 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-void	*ft_free(void **ptr);
+// no standard libft functions
 
+void	*ft_free(void **ptr);
+char	*ft_strndup(const char *s1, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
+void	ft_close(int *fd);
+
+// standard libft functions
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
@@ -63,6 +69,8 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
+
+// bonus functions
 
 typedef struct s_list
 {

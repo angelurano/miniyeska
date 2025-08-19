@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 15:28:33 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/08 20:03:58 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:38:07 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,20 @@ int	perror_syntaxtok(t_tok *cur)
 		write(STDERR_FILENO, tok_text, tok_size);
 		write(STDERR_FILENO, "'\n", 2);
 	}
+	return (1);
+}
+
+int	perror_ambiguosredir(t_tok *word)
+{
+	char	*word_literal;
+	size_t	word_size;
+
+	word_literal = literal_expansion(word);
+	if (word_literal == NULL)
+		return (perror_malloc());
+	word_size = ft_strlen(word_literal);
+	write(STDERR_FILENO, "minishell: ", 12);
+	write(STDERR_FILENO, word_literal, word_size);
+	write(STDERR_FILENO, ": ambiguous redirect\n", 21);
 	return (1);
 }

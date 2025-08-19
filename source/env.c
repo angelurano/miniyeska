@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 18:43:52 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/15 19:11:06 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/16 10:48:03 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,20 @@ t_env	*create_env_node(char *full, char *value)
 	node->value = value;
 	node->next = NULL;
 	return (node);
+}
+
+char	*get_env_value(t_env_list *env_list, const char *key)
+{
+	t_env	*cur;
+
+	cur = env_list->head;
+	while (cur != NULL)
+	{
+		if (ft_strcmp(cur->full, key) == '=')
+			return (cur->value);
+		cur = cur->next;
+	}
+	return (NULL);
 }
 
 void	env_list_push(t_env_list *env_list, t_env *node)

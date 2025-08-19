@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:46:59 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/08 17:16:27 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/17 19:12:42 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,15 @@ int	collect_redir(t_tok **cur, t_redirs *list)
 	redir = new_redir_from_tok(op, word);
 	if (redir == NULL)
 		return (perror_malloc());
+	/* if (op->type == T_HEREDOC)
+	{
+		if (heredoc_func(shell, redir) == 1)
+			return (1);
+		// TODO: inside heredoc_func
+			char	*delimiter = simple_expansion(word);
+			pipe, signals, gnl, etc
+			free(delimiter);
+	}*/
 	redir_push(list, redir);
 	*cur = word->next;
 	free_tok(&op);

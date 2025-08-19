@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 02:42:29 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/15 19:09:23 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/17 18:45:10 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,32 @@ typedef struct s_lexer
 
 // * type for lexer state machine handler function
 typedef t_lxstate	(*t_lxhandler)(t_lexer *lx);
+
+// * expansion
+
+typedef struct s_param
+{
+	const char		*value;
+	struct s_param	*next;
+	size_t			len;
+}	t_param;
+
+typedef struct s_exp
+{
+	t_param		*head;
+	t_param		*tail;
+	size_t		len;
+	size_t		wildcards;
+}	t_exp;
+
+typedef struct s_argv
+{
+	t_list	*head;
+	t_list	*tail;
+	size_t	argc;
+}	t_argv;
+
+// * main
 
 /*
  * environment variable node,
