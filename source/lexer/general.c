@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:09:56 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/10 14:55:08 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/04 01:39:24 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ static t_lxstate	handle_general_word(t_lexer *lx)
 			|| *lx->cur == '*' || *lx->cur == '(' || *lx->cur == ')'
 			|| *lx->cur == '\'' || *lx->cur == '"'
 			|| (*lx->cur == '&' && lx->cur[1] == '&')
-			|| (*lx->cur == '$' && (lx->cur[1] == '?'
-					|| lx->cur[1] == '_' || ft_isalnum(lx->cur[1]))))
+			|| (is_param_start(lx->cur)))
 			break ;
 		lx_advance(lx);
 	}
@@ -44,8 +43,7 @@ static t_lxstate	handle_general_2(t_lexer *lx)
 		return (lx_advance(lx), LX_IN_SINGLE_Q);
 	if (*lx->cur == '"')
 		return (lx_advance(lx), LX_IN_DOUBLE_Q);
-	if (*lx->cur == '$'
-		&& (lx->cur[1] == '?' || lx->cur[1] == '_' || ft_isalnum(lx->cur[1])))
+	if (is_param_start(lx->cur))
 	{
 		if (start_word(lx) == 1)
 			return (LX_ERR);

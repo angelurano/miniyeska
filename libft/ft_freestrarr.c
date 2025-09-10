@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   ft_freestrarr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
+/*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 00:24:27 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/16 14:20:21 by gomandam         ###   ########.fr       */
+/*   Created: 2025/09/10 02:05:46 by migugar2          #+#    #+#             */
+/*   Updated: 2025/09/10 02:05:52 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "libft.h"
 
-/*	To file-descriptor: assuming complete with prompt lexer and struct*/
-void	_fork()
+void	ft_freestrarr(char ***arr)
 {
-	pid_t	pid;
+	size_t	i;
 
-	pid = fork();
+	if (!arr || !*arr)
+		return ;
+	i = 0;
+	while ((*arr)[i])
+		free((*arr)[i++]);
+	free(*arr);
+	*arr = NULL;
 }
-
-void	check_fork()
-{
-	
-}
-
-int	exec_program(t_shell *shell)
-{
-}
-

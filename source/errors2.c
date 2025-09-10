@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   errors2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 15:23:02 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/16 10:46:16 by migugar2         ###   ########.fr       */
+/*   Created: 2025/07/22 00:24:27 by gomandam          #+#    #+#             */
+/*   Updated: 2025/09/10 02:19:39 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	perror_cmdnotfound(t_shell *shell, const char *cmd)
 {
-	unsigned char	*c1;
-	unsigned char	*c2;
-	size_t			i;
+	size_t	cmd_len;
 
-	c1 = (unsigned char *)s1;
-	c2 = (unsigned char *)s2;
-	i = 0;
-	while ((c1[i] || c2[i]) && i < n)
-	{
-		if (c1[i] != c2[i])
-			return (c1[i] - c2[i]);
-		i++;
-	}
-	if (i == n)
-		return (0);
-	return (c1[i] - c2[i]);
+	cmd_len = ft_strlen(cmd);
+	write(STDERR_FILENO, "minishell: command not found: ", 30);
+	write(STDERR_FILENO, cmd, cmd_len);
+	write(STDERR_FILENO, "\n", 1);
+	if (shell)
+		shell->last_status = 127;
+	return (1);
 }
+

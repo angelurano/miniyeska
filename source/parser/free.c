@@ -6,34 +6,42 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:22:22 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/03 18:13:39 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/26 04:01:39 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_redirs(t_redirs *list)
+void	free_redirslst(t_redir **head)
 {
-	t_redir	*current;
 	t_redir	*next;
 
-	if (!list)
+	if (!head || !*head)
 		return ;
-	current = list->head;
-	while (current)
+	while (*head != NULL)
 	{
-		next = current->next;
-		if (current->u_data.word != NULL)
-			free_tok(&current->u_data.word);
-		free(current);
-		current = next;
+		next = (*head)->next;
+		if ((*head)->u_data.word != NULL)
+			free_tok(&(*head)->u_data.word);
+		free(*head);
+		*head = next;
 	}
-	list->head = NULL;
-	list->tail = NULL;
+	*head = NULL;
+}
+
+void	free_redirs(t_redirs *redirs)
+{
+	if (!redirs)
+		return ;
+	free_redirslst(&redirs->head);
+	redirs->head = NULL;
+	redirs->tail = NULL;
 }
 
 void	free_ast_cmd_parse(t_ast **ast)
 {
+	if (!ast || !*ast)
+		return ;
 	if ((*ast)->u_data.cmd.u_data.words != NULL)
 		free_tokens(&(*ast)->u_data.cmd.u_data.words);
 	free_redirs(&(*ast)->u_data.cmd.redir);

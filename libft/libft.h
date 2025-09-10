@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 19:41:11 by migugar2          #+#    #+#             */
-/*   Updated: 2025/07/23 04:52:26 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/10 02:09:52 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,16 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-void	*ft_free(void **ptr);
+// no standard libft functions
 
+void	*ft_free(void **ptr);
+char	*ft_freestr(char **str);
+void	ft_freestrarr(char ***arr);
+void	ft_close(int *fd);
+char	*ft_strndup(const char *s1, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
+
+// standard libft functions
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);

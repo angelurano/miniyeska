@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 15:23:02 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/16 10:46:16 by migugar2         ###   ########.fr       */
+/*   Created: 2025/08/17 19:25:38 by migugar2          #+#    #+#             */
+/*   Updated: 2025/08/17 19:25:52 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	ft_close(int *fd)
 {
-	unsigned char	*c1;
-	unsigned char	*c2;
-	size_t			i;
-
-	c1 = (unsigned char *)s1;
-	c2 = (unsigned char *)s2;
-	i = 0;
-	while ((c1[i] || c2[i]) && i < n)
+	if (fd && *fd != -1)
 	{
-		if (c1[i] != c2[i])
-			return (c1[i] - c2[i]);
-		i++;
+		close(*fd);
+		*fd = -1;
 	}
-	if (i == n)
-		return (0);
-	return (c1[i] - c2[i]);
 }

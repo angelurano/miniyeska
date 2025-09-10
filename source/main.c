@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 00:00:07 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/15 19:00:25 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/10 02:23:07 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char *argv[], char *envp[])
 		return (1);
 	while (1)
 	{
-		// TODO: Handle signals, and exit errors for return 1
+		// TODO: Handle signals, and exit errors for return 1, create repl function
 		shell.line = readline(MINI_PROMPT);
 		if (!shell.line)
 			break ;
@@ -31,25 +31,29 @@ int	main(int argc, char *argv[], char *envp[])
 			add_history(shell.line);
 		if (tokenize(shell.line, &shell.tokens) == 1)
 		{
-			ft_free((void **)&shell.line);
+			ft_freestr(&shell.line);
 			break ;
 		}
 		if (shell.tokens == NULL)
 		{
-			ft_free((void **)&shell.line);
+			ft_freestr(&shell.line);
 			continue ;
 		}
-		debug_tokenizer(shell.tokens);
+		// debug_tokenizer(&shell);
 		if (parse_ast(shell.tokens, &shell.ast) == 1)
 		{
-			// free_tokens(&shell.tokens);
-			ft_free((void **)&shell.line);
+			ft_freestr(&shell.line);
 			continue ;
 		}
-		debug_parser(shell.ast);
-		free_ast_parse(&shell.ast); // ? Must use free_ast_final when ast is expanded
-		// free_tokens(&tokens); // TODO: free tokens must not free because are freed
-		ft_free((void **)&shell.line);
+		if (execute_ast(&shell, shell.ast) == 1)
+		{
+			// free_ast_parse(&shell.ast); // TODO: must free in execution
+			ft_freestr(&shell.line);
+			continue ;
+		}
+		// debug_parser(&shell);
+		// free_ast_exp(&shell.ast); // TODO: must free in execution
+		ft_freestr(&shell.line);
 	}
 	free_env_list(&shell.env_list);
 	rl_clear_history();

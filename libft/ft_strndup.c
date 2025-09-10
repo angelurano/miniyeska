@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 15:23:02 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/16 10:46:16 by migugar2         ###   ########.fr       */
+/*   Created: 2025/08/12 23:10:09 by migugar2          #+#    #+#             */
+/*   Updated: 2025/08/12 23:24:04 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+char	*ft_strndup(const char *s1, size_t n)
 {
-	unsigned char	*c1;
-	unsigned char	*c2;
-	size_t			i;
+	char	*s2;
+	size_t	len;
 
-	c1 = (unsigned char *)s1;
-	c2 = (unsigned char *)s2;
-	i = 0;
-	while ((c1[i] || c2[i]) && i < n)
-	{
-		if (c1[i] != c2[i])
-			return (c1[i] - c2[i]);
-		i++;
-	}
-	if (i == n)
-		return (0);
-	return (c1[i] - c2[i]);
+	len = ft_strlen(s1);
+	if (len > n)
+		len = n;
+	s2 = malloc(len + 1);
+	if (s2 == NULL)
+		return (NULL);
+	ft_strlcpy(s2, s1, len + 1);
+	return (s2);
 }

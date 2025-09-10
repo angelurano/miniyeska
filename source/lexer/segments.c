@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:04:22 by migugar2          #+#    #+#             */
-/*   Updated: 2025/07/24 21:36:03 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/08/29 12:16:40 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_seg	*new_seg(t_segtype k, const char *ptr, size_t len)
 	seg->type = k;
 	seg->slice.begin = ptr;
 	seg->slice.len = len;
+	seg->flags = SEGF_NONE;
 	seg->next = NULL;
 	return (seg);
 }

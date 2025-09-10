@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 02:42:29 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/15 19:09:23 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/04 02:01:39 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define STRUCTURES_H
 
 # include <sys/types.h> // pid_t, size_t
+# include <stdint.h> // uint8_t
 
 // * slice from the original readline buffer (the input line)
 typedef struct s_slice
@@ -35,11 +36,19 @@ typedef enum e_segtype
 	SEG_WILDCARD
 }	t_segtype;
 
+typedef enum e_segflags
+{
+	SEGF_NONE = 0,
+	SEGF_QUOTED = 1 << 0,
+	SEGF_DOUBLE = 1 << 1,
+}	t_segflags;
+
 // * segment within a t_tok of type T_WORD, list in order of appearance
 typedef struct s_seg
 {
 	t_segtype		type;
 	t_slice			slice;
+	uint8_t			flags;
 	struct s_seg	*next;
 }	t_seg;
 
@@ -244,6 +253,80 @@ typedef struct s_lexer
 
 // * type for lexer state machine handler function
 typedef t_lxstate	(*t_lxhandler)(t_lexer *lx);
+
+// *expansion
+/*
+ * types of atoms in a builder for expansion:
+ * - ATOM_END: end of atoms marker
+ * - ATOM_LIT: literal text
+ * - ATOM_WILD: wildcard '*'
+ */
+typedef enum e_atomtype
+{
+	ATOM_END = 0,
+	ATOM_LIT,
+	ATOM_WILD
+}	t_atomtype;
+
+/*
+ * atom node in a builder linked list for expansion
+ * represents a piece of a word, either literal text or wildcard
+ * and allows to build complex words with multiple segments
+ * value points to the original input line and must not be freed
+ */
+typedef struct s_atom
+{
+	t_atomtype		type;
+	const char		*value;
+	size_t			len;
+	struct s_atom	*next;
+}	t_atom;
+
+// * bitwise flags for t_builder
+typedef enum e_buildflags
+{
+	BUILDF_NONE = 0,
+	BUILDF_FINISH = 1 << 0,
+	BUILDF_ASSIGN = 1 << 1,
+	BUILDF_LEFT = 1 << 2,
+	BUILDF_EQ = 1 << 3,
+	BUILDF_WILD = 1 << 4,
+}	t_buildflags;
+
+/*
+ * builder struct for expansion
+ * a builder represents a single argument divided in atoms
+ * can be expanded into multiple arguments if it contains wildcards
+ */
+typedef struct s_builder
+{
+	t_atom				*head;
+	t_atom				*tail;
+	uint8_t				flags;
+	struct s_builder	*next;
+}	t_builder;
+
+/*
+ * expansion struct for building expanded arguments
+ * last_status is itoa version of last exit status for '$?', and must be freed
+ */
+typedef struct s_expand
+{
+	t_builder	*head;
+	t_builder	*tail;
+	char		*last_status;
+	uint8_t		is_assign;
+}	t_expand;
+
+// * list of arguments for a t_tok expansion, for a command or redir word
+typedef struct s_argv
+{
+	t_list	*head;
+	t_list	*tail;
+	size_t	argc;
+}	t_argv;
+
+// * main
 
 /*
  * environment variable node,
