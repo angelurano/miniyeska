@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:46:00 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/08 17:16:27 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:21:31 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,25 @@ void	collect_cmd(t_tok **cur, t_ast *cmd, t_tok **last_word)
 	cmd->u_data.cmd.count++;
 }
 
-int	parse_cmd(t_tok **cur, t_ast **out)
+int	parse_cmd(t_shell *shell, t_tok **cur, t_ast **out)
 {
 	t_ast	*cmd;
 	t_tok	*last_word;
 
 	if (*cur == NULL)
-		return (perror_unexpecteol());
+		return (perror_unexpecteol(shell));
 	if ((*cur)->type != T_WORD && !is_redirtok(*cur))
-		return (perror_syntaxtok(*cur), 1);
+		return (perror_syntaxtok(shell, *cur));
 	cmd = new_cmd_leaf();
 	if (cmd == NULL)
-		return (perror_malloc());
+		return (perror_malloc(shell));
 	last_word = NULL;
 	while (*cur && ((*cur)->type == T_WORD
 			|| is_redirtok(*cur)))
 	{
 		if ((*cur)->type == T_WORD)
 			collect_cmd(cur, cmd, &last_word);
-		else if (collect_redir(cur, &cmd->u_data.cmd.redir) == 1)
+		else if (collect_redir(shell, cur, &cmd->u_data.cmd.redir) == 1)
 			return (free_ast_parse(&cmd), 1);
 	}
 	*out = cmd;
@@ -81,22 +81,22 @@ t_ast	*new_subsh_node(t_ast *child)
 	return (ast);
 }
 
-int	parse_subsh(t_tok **cur, t_ast **out)
+int	parse_subsh(t_shell *shell, t_tok **cur, t_ast **out)
 {
 	t_ast	*child;
 
 	consume_tok(cur);
-	if (parse_and_or(cur, &child) == 1)
+	if (parse_and_or(shell, cur, &child) == 1)
 		return (1);
 	if (*cur == NULL)
-		return (perror_unexpecteol(), free_ast_parse(&child), 1);
+		return (perror_unexpecteol(shell), free_ast_parse(&child), 1);
 	if ((*cur)->type != T_RPAREN)
-		return (perror_syntaxtok(*cur), free_ast_parse(&child), 1);
+		return (perror_syntaxtok(shell, *cur), free_ast_parse(&child), 1);
 	consume_tok(cur);
 	child = new_subsh_node(child);
 	if (child == NULL)
-		return (perror_malloc(), free_ast_parse(&child), 1);
-	if (collect_redirs(cur, &child->u_data.subsh.redir) == 1)
+		return (perror_malloc(shell), free_ast_parse(&child), 1);
+	if (collect_redirs(shell, cur, &child->u_data.subsh.redir) == 1)
 		return (free_ast_parse(&child), 1);
 	*out = child;
 	return (0);

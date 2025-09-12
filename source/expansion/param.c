@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 20:28:03 by migugar2          #+#    #+#             */
-/*   Updated: 2025/09/04 01:54:02 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:46:52 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ int	solve_param(t_shell *shell, t_seg *param, t_expand *build)
 
 	if (param->slice.len == 1 && param->slice.begin[0] == '?')
 	{
-		if (build->last_status == NULL)
-			build->last_status = ft_itoa(shell->last_status);
-		if (build->last_status == NULL)
+		if (build->last_status_str == NULL)
+			build->last_status_str = ft_itoa(shell->last_status);
+		if (build->last_status_str == NULL)
 			return (1);
-		return (append_atom(build, build->last_status,
-				ft_strlen(build->last_status), ATOM_LIT));
+		return (append_atom(build, build->last_status_str,
+				ft_strlen(build->last_status_str), ATOM_LIT));
 	}
 	key = malloc(sizeof(char) * (param->slice.len + 1));
 	if (key == NULL)

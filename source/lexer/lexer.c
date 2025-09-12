@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 03:41:41 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/08 20:04:27 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:10:33 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,18 @@ static t_lxhandler	lexer_handler(t_lxstate state)
 	return (handle_finish);
 }
 
-static int	lexer_error(t_lexer *lx, t_tok **out)
+static int	lexer_error(t_shell *shell, t_lexer *lx)
 {
-	*out = NULL;
+	shell->tokens = NULL;
 	free_tokens(&lx->head);
 	if (lx->state == LX_ERR)
-		return (perror_malloc());
+		return (perror_malloc(shell));
 	else if (*lx->cur == '\0')
-		perror_unexpecteof(lx->prev);
-	// * else unmanaged error in LX_DIE
+		perror_unexpecteof(shell, lx->prev);
 	return (0);
 }
 
-int	tokenize(const char *input, t_tok **out)
+int	tokenize(t_shell *shell)
 {
 	t_lexer		lx;
 	t_lxstate	next;
@@ -63,8 +62,8 @@ int	tokenize(const char *input, t_tok **out)
 	lx.tok = NULL;
 	lx.head = NULL;
 	lx.tail = NULL;
-	lx.input = input;
-	lx.cur = input;
+	lx.input = shell->line;
+	lx.cur = shell->line;
 	lx.state = LX_GENERAL;
 	while (lx.state != LX_EOL && lx.state != LX_DIE && lx.state != LX_ERR)
 	{
@@ -74,7 +73,7 @@ int	tokenize(const char *input, t_tok **out)
 	}
 	emit_tok(&lx);
 	if (lx.state == LX_ERR || lx.state == LX_DIE)
-		return (lexer_error(&lx, out));
-	*out = lx.head;
+		return (lexer_error(shell, &lx));
+	shell->tokens = lx.head;
 	return (0);
 }

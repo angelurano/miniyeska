@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 02:42:29 by migugar2          #+#    #+#             */
-/*   Updated: 2025/09/04 02:01:39 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:45:54 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <sys/types.h> // pid_t, size_t
 # include <stdint.h> // uint8_t
+# include <termios.h> // struct termios
 
 // * slice from the original readline buffer (the input line)
 typedef struct s_slice
@@ -314,7 +315,7 @@ typedef struct s_expand
 {
 	t_builder	*head;
 	t_builder	*tail;
-	char		*last_status;
+	char		*last_status_str;
 	uint8_t		is_assign;
 }	t_expand;
 
@@ -365,7 +366,8 @@ typedef struct s_shell
 	t_tok		*tokens;
 	t_ast		*ast;
 	t_env_list	env_list;
-	int			last_status;
+	int			interactive;
+	uint8_t		last_status;
 }	t_shell;
 
 #endif

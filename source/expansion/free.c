@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:50:24 by migugar2          #+#    #+#             */
-/*   Updated: 2025/09/09 20:59:10 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:46:32 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ void	free_t_expand(t_expand *build)
 		return ;
 	free_builders(&build->head);
 	build->tail = NULL;
-	if (build->last_status != NULL)
+	if (build->last_status_str != NULL)
 	{
-		free(build->last_status);
-		build->last_status = NULL;
+		free(build->last_status_str);
+		build->last_status_str = NULL;
 	}
 }
 

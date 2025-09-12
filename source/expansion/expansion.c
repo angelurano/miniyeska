@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 23:00:52 by migugar2          #+#    #+#             */
-/*   Updated: 2025/09/03 19:15:40 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:46:17 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	build_literals(t_shell *shell, t_builder *builder, t_argv *argv)
 	total_len = get_len_litbuilder(builder);
 	joined = malloc(sizeof(char) * (total_len + 1));
 	if (joined == NULL)
-		return (perror_malloc(), 1);
+		return (perror_malloc(shell));
 	acur = builder->head;
 	i = 0;
 	while (acur != NULL)
@@ -51,9 +51,8 @@ int	build_literals(t_shell *shell, t_builder *builder, t_argv *argv)
 	}
 	joined[total_len] = '\0';
 	if (new_argv_push(argv, joined) == 1)
-		return (perror_malloc(), free(joined), 1);
+		return (perror_malloc(shell), free(joined), 1);
 	return (0);
-	(void)shell;
 }
 
 int	build_expansion(t_shell *shell, t_expand *build, t_argv *argv)
@@ -113,10 +112,10 @@ int	expansion(t_shell *shell, t_tok *tok, t_argv *argv, int is_assign)
 
 	build.head = NULL;
 	build.tail = NULL;
-	build.last_status = NULL;
+	build.last_status_str = NULL;
 	build.is_assign = is_assign;
 	if (get_builders(shell, tok, &build) == 1)
-		return (perror_malloc(), free_t_expand(&build), 1);
+		return (perror_malloc(shell), free_t_expand(&build), 1);
 	if (build.head->head == NULL)
 		return (free_t_expand(&build), 0);
 	if (build_expansion(shell, &build, argv) == 1)

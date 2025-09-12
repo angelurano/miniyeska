@@ -290,15 +290,16 @@ int	debug_ast_node(t_shell *shell, t_ast **ast, int level)
 
 // =============================================================================
 
-void	debug_tokenizer(t_shell *shell)
+int	debug_tokenizer(t_shell *shell)
 {
 	debug_print_header("TOKENIZER OUTPUT");
 	if (!shell->tokens)
 	{
 		printf("No tokens found.\n");
-		return ;
+		return (0);
 	}
 	debug_token_list(shell->tokens, 1);
+	return (0);
 }
 
 int	debug_parser(t_shell *shell)

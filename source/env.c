@@ -6,13 +6,35 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 18:43:52 by migugar2          #+#    #+#             */
-/*   Updated: 2025/08/16 10:48:03 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/11 00:39:35 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// TODO: if ft_strchr(full, '=') is NULL, will not execute this function, else, execute this function with the pointer + 1
+char	**get_envp_shell(t_shell *shell)
+{
+	size_t	i;
+	t_env	*cur;
+
+	if (shell->env_list.envp != NULL)
+		return (shell->env_list.envp);
+	shell->env_list.envp = malloc(sizeof(char *) * (shell->env_list.size + 1));
+	if (shell->env_list.envp == NULL)
+		return (NULL);
+	cur = shell->env_list.head;
+	i = 0;
+	while (cur != NULL)
+	{
+		shell->env_list.envp[i] = cur->full;
+		i++;
+		cur = cur->next;
+	}
+	shell->env_list.envp[i] = NULL;
+	return (shell->env_list.envp);
+}
+
+// TODO: in export, if ft_strchr(full, '=') is NULL, will not execute this function, else, execute this function with the pointer + 1
 t_env	*create_env_node(char *full, char *value)
 {
 	t_env	*node;

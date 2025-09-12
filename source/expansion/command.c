@@ -6,7 +6,7 @@
 /*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 16:52:47 by migugar2          #+#    #+#             */
-/*   Updated: 2025/09/03 20:20:15 by migugar2         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:26:41 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	expand_cmd(t_shell *shell, t_cmd *cmd)
 	cmd->u_data.argv = NULL;
 	cmd->u_data.argv = convert_argv_to_array(&argv);
 	if (cmd->u_data.argv == NULL)
-		return (perror_malloc(), free_argv(&argv),
+		return (perror_malloc(shell), free_argv(&argv),
 			free_exp_redirs(&cmd->redir), 1);
 	cmd->count = argv.argc;
 	return (0);

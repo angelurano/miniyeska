@@ -3,30 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
+/*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 00:24:27 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/29 23:53:05 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:21:36 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/wait.h>
-#include <unistd.h>
 
+// TODO: last_status write
 // waits for process ids, returns exit status of right child process
 // st1 & st2: storage exit status, overwritten by waitpid even initialized 0
-static int	wait_pipe(pid_t p1, pid_t p2)
+static int	wait_pipe(t_shell *shell, pid_t p1, pid_t p2)
 {
 	int	st1;
 	int	st2;
 
-	waitpid(p1, &st1, 0);
+	signals_wait(shell);
 	waitpid(p2, &st2, 0);
+	waitpid(p1, &st1, 0);
+	signals_repl(shell);
 	if (WIFEXITED(st2))
 		return (WEXITSTATUS(st2));
 	if (WIFSIGNALED(st2))
+	{
+		int sig = WTERMSIG(st2);
+		if (sig == SIGQUIT)
+		{
+			if (__WCOREDUMP(st2))
+				write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
+			else
+				write(STDOUT_FILENO, "Quit\n", 5);
+		}
 		return (128 + WTERMSIG(st2));
+	}
 	return (1);
 }
 
@@ -88,7 +99,7 @@ int	exec_ast_pipe(t_shell *shell, t_ast *node)
 	if (!node || !node->u_data.op.left || !node->u_data.op.right)
 		return (1);
 	if (pipe(fd) < 0)
-		return (perror("minishell: pipe"), 1);
+		return (perror("minishell: pipe"), 1); // TODO: last_status
 	pid_l = pipe_fork(shell, node->u_data.op.left, fd,
 			STDOUT_FILENO);
 	pid_r = pipe_fork(shell, node->u_data.op.right, fd,
@@ -97,6 +108,6 @@ int	exec_ast_pipe(t_shell *shell, t_ast *node)
 		close(fd[0]);
 	if (fd[1] >= 0)
 		close(fd[1]);
-	return (wait_pipe(pid_l, pid_r));
+	return (wait_pipe(shell, pid_l, pid_r));
 }
 

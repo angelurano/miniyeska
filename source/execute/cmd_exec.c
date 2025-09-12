@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gomandam <gomandam@student.42madrid>       +#+  +:+       +#+        */
+/*   By: migugar2 <migugar2@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 00:24:27 by gomandam          #+#    #+#             */
-/*   Updated: 2025/08/30 00:14:07 by gomandam         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:17:36 by migugar2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
+// TODO: last_status write
 // fork and execute external cmd, wait for completion. Returns exit status
 // 127 (manual) Utility to be executed was not found.
 // waitpid(pid, &status, 0); for single CMD, not pipe. Get exit code, no zombies
@@ -36,19 +37,32 @@ static int	run_external(t_shell *shell, t_cmd *cmd)
 		return (perror("minishell: fork"), 1);
 	if (pid == 0)
 	{
-		execve(cmd->u_data.argv[0], cmd->u_data.argv, shell->env_list.envp);
+		signals_exec(shell);
+		execve(cmd->u_data.argv[0], cmd->u_data.argv, get_envp_shell(shell));
 		perror("minishell: execve");
 		_exit(127);
 	}
+	signals_wait(shell);
 	waitpid(pid, &status, 0);
+	signals_repl(shell);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
+	{
+		int sig = WTERMSIG(status);
+		if (sig == SIGQUIT)
+		{
+			if (__WCOREDUMP(status))
+				write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
+			else
+				write(STDOUT_FILENO, "Quit\n", 5);
+		}
 		return (128 + WTERMSIG(status));
+	}
 	return (1);
 }
 
-// Decide builtin or external, execute builtin directly, and 
+// Decide builtin or external, execute builtin directly, and
 // external is via fork/execve. Then, return cmd exit status
 int	run_builtin_external(t_shell *shell, t_cmd *cmd)
 {
