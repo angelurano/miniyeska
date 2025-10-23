@@ -93,3 +93,7 @@ make # or make debug, make dev
 * Signals: per‑process actions and terminal group management.
 * Parsing: correct tokenization, AST, and operator precedence.
 * Error handling and exceptional memory cleanup.
+
+<br/>
+
+> Authored by [angelurano](https://github.com/angelurano/miniyeska) and [g01100001](https://github.com/gomandam)
